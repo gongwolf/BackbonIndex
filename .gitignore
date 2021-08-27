@@ -1,0 +1,15 @@
+# Compiled class file
+*.class
+
+# Log file
+*.log
+
+# Package Files #
+*.jar
+
+# Out Folders and Data Folders #
+Data
+out
+target
+src/test
+src/main/resources

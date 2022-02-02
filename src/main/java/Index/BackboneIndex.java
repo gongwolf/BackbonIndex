@@ -233,6 +233,12 @@ public class BackboneIndex {
             System.out.println("Updated the degree pair at level " + currentLevel);
             checkIndexFolderExisted(level);
 
+            String textFilePath="";
+
+            if (ParsedOptions.savedFolder != null) {
+                textFilePath = ParsedOptions.savedFolder + "/preprocessed/level" + currentLevel + "/";
+                neo4j.saveGraphToTextFormation(textFilePath);
+            }
             HashSet<Long> single_node_list = new HashSet<>();
 //            if (currentLevel == 1) {
             sub_step_deletedEdges.addAll(removeSingletonEdgesInForests(sub_step_deletedNodes));
@@ -249,9 +255,10 @@ public class BackboneIndex {
 
             System.out.println("#####");
 
-//            String textFilePath = prefix + folder_name + "/non-single/level" + currentLevel + "/";
-//            neo4j.saveGraphToTextFormation(textFilePath);
-
+            if (ParsedOptions.savedFolder != null) {
+                textFilePath = ParsedOptions.savedFolder + "/pre-non-single/level" + currentLevel + "/";
+                neo4j.saveGraphToTextFormation(textFilePath);
+            }
             //remove the edges in each cluster
             NodeClusters process_clusters = removeLowerDegreePairEdgesByThreshold(sub_step_deletedNodes, sub_step_deletedEdges);
             deleted = !sub_step_deletedEdges.isEmpty();
@@ -274,7 +281,7 @@ public class BackboneIndex {
             } else {
                 for (Map.Entry<Integer, NodeCluster> cluster_entry : process_clusters.clusters.entrySet()) {
                     //jump the noise cluster
-                    if (cluster_entry.getKey() == 0 || cluster_entry.getValue().num_removed_edges == 0) {
+                    if (ParsedOptions.clustering_method.equals("node") && (cluster_entry.getKey() == 0 || cluster_entry.getValue().num_removed_edges == 0)) {
                         continue;
                     }
 
@@ -302,11 +309,10 @@ public class BackboneIndex {
 //            neo4j.saveGraphToTextFormation(ParsedOptions.output_graphIndo_foler + "/" + ParsedOptions.db_name + "/" + ParsedOptions.db_name + "_Level0");
 //            System.exit(0);
 
-
-//            textFilePath = prefix + folder_name + "/level" + currentLevel + "/";
-//            System.out.println(textFilePath);
-//            neo4j.saveGraphToTextFormation(textFilePath);
-
+            if (ParsedOptions.savedFolder != null) {
+                textFilePath = ParsedOptions.savedFolder + "/processed/level" + currentLevel + "/";
+                neo4j.saveGraphToTextFormation(textFilePath);
+            }
 
             deletedEdges.addAll(sub_step_deletedEdges);
             deletedNodes.addAll(sub_step_deletedNodes);
@@ -759,6 +765,8 @@ public class BackboneIndex {
             node_clusters = null;
         }
 
+//        System.out.println(node_clusters);
+
 
         if (ParsedOptions.msize != 0) {
             node_clusters.mergeSmallCluster(ParsedOptions.msize, neo4j);
@@ -766,7 +774,7 @@ public class BackboneIndex {
 
         System.out.println(neo4j.getNumberofNodes() + "   " + neo4j.getNumberofEdges());
 
-//        neo4j.saveGraphToTextFormation(ParsedOptions.output_graphIndo_foler + "/" + ParsedOptions.db_name + "/" + ParsedOptions.db_name + "_Level0");
+        neo4j.saveGraphToTextFormation(ParsedOptions.output_graphIndo_foler + "/" + ParsedOptions.db_name + "/" + ParsedOptions.db_name + "_Level0");
 //        for (Map.Entry<Integer, NodeCluster> e : node_clusters.clusters.entrySet()) {
 //            for (Long c : e.getValue().node_list) {
 //                System.out.println(e.getKey() + " " + c);

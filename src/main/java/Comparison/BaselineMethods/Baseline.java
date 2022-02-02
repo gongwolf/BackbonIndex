@@ -30,6 +30,7 @@ public class Baseline implements Runnable {
     static boolean p_init;
     static boolean p_lnd;
     static int p_lnd_n;
+    public String postfix;
 
     String db_name;
     int num_queries;
@@ -45,6 +46,7 @@ public class Baseline implements Runnable {
     public String result_folder;
     public long timestamp;
     public Neo4jDB neo4j;
+    public String methed_name = "bbs";
 
 
     public Baseline(String db_name) {
@@ -409,7 +411,7 @@ public class Baseline implements Runnable {
         init_landmark();
         ArrayList<path> results = queryOnline(this.current_src, this.current_dest);
         LOGGER.info("The size of the finnal result is " + results.size());
-        String paths_output_file = result_folder + "/bbs_" + current_src + "_" + current_dest + "_" + timestamp + ".log";
+        String paths_output_file = result_folder + "/"+this.methed_name+"_" + current_src + "_" + current_dest + "_" + postfix + ".log";
         savePathsInformation(results, paths_output_file);
         LOGGER.info("-----------------------------------------------------------------------------------------");
     }

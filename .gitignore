@@ -13,3 +13,7 @@ out
 target
 src/test
 src/main/resources
+.idea
+
+#but the sample NY dataset.
+!Data/C9_NY

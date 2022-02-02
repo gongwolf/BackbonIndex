@@ -87,7 +87,7 @@ public class BFSPartition {
             tx.success();
         }
 
-        System.out.println((visited_nodes.size() - start_num_node) + "  " + cluster.node_list.size());
+        System.out.println("BFS: "+(visited_nodes.size() - start_num_node) + "  " + cluster.node_list.size());
 
         return cluster;
     }

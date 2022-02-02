@@ -312,13 +312,12 @@ public class Neo4jDB {
 
         try (Transaction tx = graphDB.beginTx()) {
 
+
             File dataF = new File(textFilePath);
-//            try {
-//                FileUtils.deleteDirectory(dataF);
-//                dataF.mkdirs();
-//            } catch (IOException e) {
-//                e.printStackTrace();
-//            }
+            if (!dataF.exists()) {
+                dataF.mkdirs();
+            }
+
             System.out.println(textFilePath);
 
 

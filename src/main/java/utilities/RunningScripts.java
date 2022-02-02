@@ -1,7 +1,10 @@
 package utilities;
 
+import Comparison.BaselineMethods.GenerateBBS;
+import Comparison.BaselineMethods.GenerateBackbone;
 import Comparison.Compare.compareBBSBackbone;
 import Comparison.DTWComparison;
+import Comparison.DTWComparisonNew;
 import Index.BackboneIndex;
 import Index.Landmark.Landmark;
 import Neo4jTools.CreateDB;
@@ -38,6 +41,14 @@ public class RunningScripts {
                 Landmark ldm = new Landmark(ParsedOptions.db_name, "LandMark_Building");
                 ldm.readLandmarkIndex(ParsedOptions.number_landmark, ParsedOptions.landmark_idx_list, ParsedOptions.createNewLandmarks);
                 break;
+            case "GenerateBBSResults":
+                GenerateBBS gbbs = new GenerateBBS();
+                gbbs.generating();
+                break;
+            case "GenerateBackboneResults":
+                GenerateBackbone gbackbone = new GenerateBackbone();
+                gbackbone.generating();
+                break;
             case "Comparison":
                 compareBBSBackbone comparison = new compareBBSBackbone();
                 comparison.compare();
@@ -45,6 +56,10 @@ public class RunningScripts {
             case "DTWComparison":
                 DTWComparison dtwComparison = new DTWComparison();
                 dtwComparison.comparision();
+                break;
+            case "DTWComparisonNew":
+                DTWComparisonNew newdtw = new DTWComparisonNew();
+                newdtw.comparision();
                 break;
             case "GraphInformation":
                 GraphInformation gi = new GraphInformation();
@@ -76,6 +91,7 @@ public class RunningScripts {
             options.addOption("sub_K", "subK", true, "number of nodes that the subgraph generated");
             options.addOption("outGraphInfo", "outGraphInfo", true, "the place where stores the output information of nodes and edges");
             options.addOption("indexFolder", "indexFolder", true, "the place where to store the index");
+            options.addOption("savedFolder", "savedFolder", true, "the place to save the sub-graph folders");
             options.addOption("min_size", "min_size", true, "size of the cluster");
             options.addOption("percentage", true, "percentage of the edges must be removed from each level");
             options.addOption("degreeHandle", true, "two degree edges handling, [none,each,normal], default:normal");
@@ -113,6 +129,7 @@ public class RunningScripts {
 
             String neo4jPath_str = cmd.getOptionValue("neo4jdb");
             String GraphInfo_str = cmd.getOptionValue("GraphInfo");
+            String saveInfo_str = cmd.getOptionValue("savedFolder");
             String out_graphinfor_str = cmd.getOptionValue("outGraphInfo");
             String dbname = cmd.getOptionValue("dbname");
             String sub_k_str = cmd.getOptionValue("sub_K");
@@ -146,7 +163,8 @@ public class RunningScripts {
                 if (method_str == null) {
                     this.method = "IndexBuilding";
                 } else if (method_str.equals("createDB") || method_str.equals("GenerateSubGraph") || method_str.equals("IndexBuilding") || method_str.equals("BuildLandMark")
-                        || method_str.equals("Comparison") || method_str.equals("DTWComparison") || method_str.equals("GraphInformation")) {
+                        || method_str.equals("Comparison") || method_str.equals("DTWComparison") || method_str.equals("GraphInformation") || method_str.equals("GenerateBBSResults")
+                        || method_str.equals("GenerateBackboneResults") || method_str.equals("DTWComparisonNew")) {
                     this.method = method_str;
                 } else {
                     return printHelper(options);
@@ -172,7 +190,12 @@ public class RunningScripts {
                     ParsedOptions.output_graphIndo_foler = out_graphinfor_str;
                 }
 
+                if (saveInfo_str != null) {
+                    ParsedOptions.savedFolder = saveInfo_str;
+                }
+
                 if (min_size_str != null) {
+                    ParsedOptions.min_size = Integer.parseInt(min_size_str);
                     ParsedOptions.min_size = Integer.parseInt(min_size_str);
                 }
 
@@ -268,7 +291,7 @@ public class RunningScripts {
                     ParsedOptions.info_verb = Boolean.valueOf(info_verb_str);
                 }
 
-                System.out.println(ParsedOptions.p_ind + "    " + ParsedOptions.msize + "    " + ParsedOptions.clustering_method);
+                System.out.println(ParsedOptions.p_ind + "    " + ParsedOptions.msize + "    " + ParsedOptions.clustering_method+"  "+ParsedOptions.degreeHandle);
 //                System.exit(0);
             }
         } catch (ParseException | NumberFormatException e) {

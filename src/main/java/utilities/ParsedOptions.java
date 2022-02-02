@@ -37,6 +37,7 @@ public class ParsedOptions {
     public static Integer timeout = 90000;
     public static String info_type = "distribution";
     public static Boolean info_verb = false;
+    public static String savedFolder = null;
 
     //Project Environment
 //    public static String db_name = "C9_FLA";

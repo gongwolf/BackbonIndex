@@ -42,12 +42,14 @@ public class AverageObj {
         for (int i = 0; i < ParsedOptions.cost_dimension; i++) {
             avg_bbs_cost[i] = avg_bbs_cost[i] / finised_query;
             avg_backbone_cost[i] = avg_backbone_cost[i] / finised_query;
-            avg_cost[i] = avg_cost[i] / finised_query;
+            avg_cost[i] =  avg_backbone_cost[i]/avg_bbs_cost[i] ;
         }
 
         avg_max_cosine = max_cosine / finised_query;
         avg_max_cosine_average = max_cosine_average / finised_query;
         avg_distance_each = max_distance_average / finised_query;
+//        avg_max_cosine_average = max_cosine_average / bbs_result_size;
+//        avg_distance_each = max_distance_average / bbs_result_size;
         avg_highway_nodes_coverage = highway_nodes_coverage / finised_query;
 
 
@@ -56,7 +58,7 @@ public class AverageObj {
     @Override
     public String toString() {
         calculation();
-        DecimalFormat df = new DecimalFormat("#.####");
+        DecimalFormat df = new DecimalFormat("#.###########");
         return finised_query + "/" + query_num + " " + df.format(this.avg_dtw) + " " + df.format(this.avg_bbs_result_size) + " " + df.format(this.avg_backbone_result_size) + " " + df.format(this.avg_bbs_running_time)
                 + " " + df.format(this.avg_backbone_running_time) + " " +
                 df.format(this.avg_bbs_cost[0]) + " " + df.format(this.avg_bbs_cost[1]) + " " + df.format(this.avg_bbs_cost[2]) + " " +

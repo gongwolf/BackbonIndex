@@ -68,6 +68,7 @@ public class QueryProcess {
         bk_idx = new BackBoneIndex(db_name);
         b = new bbs(bk_idx.target_db_name);
         b.ldm_idx.readLandmarkIndex(number_landmark, null, false);
+        System.out.println(bk_idx.target_db_name);
         LOGGER.info("Finish the initialization ......................................................");
         LOGGER.info("--------------------------------------------------------------------------------");
     }

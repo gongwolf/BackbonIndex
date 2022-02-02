@@ -53,6 +53,7 @@ public class compareBBSBackbone {
             bbs_thread.current_dest = q.getValue();
             bbs_thread.result_folder = result_folder;
             bbs_thread.timestamp = timestamp;
+            bbs_thread.postfix = String.valueOf(timestamp);
 
 
 //            Timer timer = new Timer();

@@ -1,6 +1,6 @@
 # Backbone Index to Support Skyline Path Queries overMulti-cost Road Networks
 
-This repository is the source code for our paper, "Backbone Index to Support Skyline Path Queries over Multi-cost Road Networks".   
+This repository is the source code for our paper, "Backbone Index to Support Skyline Path Queries over Multi-cost Road Networks", which is accepted by **EDBT 2022**.    
 We propose a novel index for skyline path queries (SPQs) on multi-cost road network (MCRN), named Backbone index. The corresponding index construction method to condense an
 initial MCRN to multiple smaller summarized graphs with different summarization granularity. Also an efficient approach is introduced to find approximate solutions to SPQs. Our extensive experiments on real-world road networks show that our approach can find meaningful approximate solutions to SPQs by building a very compact Backbone index with reasonable index building time.   
 Graph data is stored by using [neo4j](https://neo4j.com/). The code implements 1) creation of neo4j DBs for real-world cities, 2) generation of sub-graphs with the given number of nodes and create the corresponding neo4j DB, 3) Construction of our backbone index, 5) Building of the landmark index that is used for the baseline query and the backbone query on the highest level and 6) the comparison of the baseline query methods with our proposed query method on our Backbone index.  
@@ -30,10 +30,15 @@ Run the code of BackboneIndex :
  -dbname,--dbname <arg>               name of the neo4j db
  -degreeHandle <arg>                  two degree edges handling,
                                       [none,each,normal], default:normal
+ -dtwnormal <arg>                     normalization for cosine similarity
  -GraphInfo,--GraphInfo <arg>         the place where stores the
                                       information of nodes and edges
  -h,--help                            print the help of this command
  -indexFolder,--indexFolder <arg>     the place where to store the index
+ -infotype <arg>                      the information type: distribution,
+                                      pair, twohop, coef
+ -infoverb <arg>                      display the information of the
+                                      coefficient in ascending order
  -landmarkIndexFolder <arg>           the place where to store the
                                       landmark index for given level neo4j
                                       db
@@ -44,6 +49,7 @@ Run the code of BackboneIndex :
  -m,--method <arg>                    methods to execute, the default
                                       value is 'exact_improved'.
  -min_size,--min_size <arg>           size of the cluster
+ -msize <arg>                         number of small nodes to merge
  -neo4jdb,--neo4jPath <arg>           the place where stores the neo4j DB
                                       files
  -nLandMark,--number_andmark <arg>    the number of the landmark
@@ -52,13 +58,18 @@ Run the code of BackboneIndex :
                                       information of nodes and edges
  -percentage <arg>                    percentage of the edges must be
                                       removed from each level
+ -pind <arg>                          p_index for the noise threshold
+ -pmethod <arg>                       the method to partition the graphs
  -resultFolder <arg>                  the place stores the paths returned
                                       by BBS and BackBone Query
+ -savedFolder,--savedFolder <arg>     the place to save the sub-graph
+                                      folders
  -sub_K,--subK <arg>                  number of nodes that the subgraph
                                       generated
+ -timeout <arg>                       the timeout of the Baseline query in
+                                      ms
  -timestamp <arg>                     data time of the log file and
                                       results returned by bbs and backbone
-
 ```
 
 ## Steps
@@ -74,18 +85,18 @@ Run the code of BackboneIndex :
 > - java -jar BackboneIndex.jar -m createDB -dbname C9_NY_22K -neo4jdb ../Data/Neo4jDB -GraphInfo ../Data/C9_NY_22K
 
 ### 3. Build the backbone index for given graph 
-> - java -jar BackboneIndex.jar -m IndexBuilding -dbname C9_NY_10K -neo4jdb ../Data/Neo4jDB -indexFolder ../Data/Index/C9_NY_10K -min_size 200 -percentage 0.01 -degreeHandle 0
-> - java -jar BackboneIndex.jar -m IndexBuilding -dbname C9_NY_22K -neo4jdb ../Data/Neo4jDB -indexFolder ../Data/Index/C9_NY_22K -min_size 200 -percentage 0.01 -degreeHandle 0
-> - java -jar BackboneIndex.jar -m IndexBuilding -dbname C9_NY -neo4jdb ../Data/Neo4jDB -indexFolder ../Data/Index/C9_NY -min_size 200 -percentage 0.01 -degreeHandle 0
+> - java -jar BackboneIndex.jar -m IndexBuilding -dbname C9_NY_10K -neo4jdb ../Data/Neo4jDB -indexFolder ../Data/Index/C9_NY_10K -min_size 200 -percentage 0.01 -degreeHandle normal
+> - java -jar BackboneIndex.jar -m IndexBuilding -dbname C9_NY_22K -neo4jdb ../Data/Neo4jDB -indexFolder ../Data/Index/C9_NY_22K -min_size 200 -percentage 0.01 -degreeHandle normal
+> - java -jar BackboneIndex.jar -m IndexBuilding -dbname C9_NY -neo4jdb ../Data/Neo4jDB -indexFolder ../Data/Index/C9_NY -min_size 200 -percentage 0.01 -degreeHandle normal
 
-### 4. Build the landmark 
+### 4. Build the landmark for the highest level of the backbone index and for the original graph. In this example, the highest backbone index is *10*. The landmark index of the original graph is used to speed up the BBS method. 
 > - java -jar BackboneIndex.jar -m BuildLandMark -dbname C9_NY_10K_Level10 -neo4jdb ../Data/Neo4jDB -logFolder ../Data/logs -landmarkIndexFolder ../Data/Index/landmarks -nLandMark 3 -cLandMark true
 > - java -jar BackboneIndex.jar -m BuildLandMark -dbname C9_NY_10K_Level0 -neo4jdb ../Data/Neo4jDB -logFolder ../Data/logs -landmarkIndexFolder ../Data/Index/landmarks -nLandMark 3 -cLandMark true
 
 ### 5. Conduct the comparison of the BBS Baseline and our query on our Backbone index
 > - java -jar BackboneIndex.jar -m Comparison -dbname C9_NY_10K -logFolder ../Data/logs -landmarkIndexFolder ../Data/Index/landmarks -resultFolder ../Data/result -numQuery 5 -nLandMark 3 -indexFolder ../Data/Index -neo4jdb ../Data/Neo4jDB
 
-### 6. Show the analysis result
+### 6. Show the analysis result, the timestamp is the time when the comparison results are generated in 'step 5'. 
 > - java -jar BackboneIndex.jar -m DTWComparison -dbname C9_NY_10K -logFolder ../Data/logs -resultFolder ../Data/result -timestamp 20201027_184337
 
 ----------------------------------------------------------------------------------------------------------------------------------------------------

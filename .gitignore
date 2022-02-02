@@ -8,7 +8,7 @@
 *.jar
 
 # Out Folders and Data Folders #
-Data
+Data/*
 out
 target
 src/test

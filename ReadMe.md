@@ -17,6 +17,31 @@ Graph data is stored by using [neo4j](https://neo4j.com/). The code implements 1
 We collects nine real-world road network datasets of from New York city (C9_NY), Bay Area (C9_BAY), Colorado (C9_COL), Florida (C9_FLA), Eastern USA (C9_E), and Central USA (C9_CTR), California (L_CAL), San Francisco (L_SF), and USA (L_NA) from [9th DIMACS Implementation Challenge](http://users.diag.uniroma1.it/challenge9/download.shtml.) and [Real Datasets for Spatial Databases: Road Networks and Points of Interest.](https://www.cs.utah.edu/~lifeifei/SpatialDataset.htm.). The raw road network data contains only the coordinates of nodes
 and the spatial length of road segments. We generate two more edge weights by sampling from a uniform distribution in the range of [1,100]. Each road segment has three dimensions.
 
+### Raw Data
+
+ref to [EDBT paper](https://www.dropbox.com/s/nm2zfdvlytm8aow/backbone_EDBT2022_CR_submitted.pdf?dl=0) for data description.
+
+- http://users.diag.uniroma1.it/challenge9/download.shtml
+- EDBT paper: https://www.cs.utah.edu/~lifeifei/SpatialDataset.htm
+- datasets start with C9_ are downloaded from http://users.diag.uniroma1.it/challenge9/download.shtml
+
+| Name        | Description  | # nodes | # arcs | Longitude | Latitude       | 
+|-------------|--------------|---------|--------|-----------|----------------|
+| C9_NY(NY)   | New York City | 264,346 | 733,846 | [40.3; 41.3] | [73.5; 74.5]   |   
+| C9_BAY(BAY) | San Francisco Bay Area | 321,270 | 800,172 | [37.0; 39.0] | [121; 123]     |     
+| C9_COL(COL) | Colorado  |  435,666  | 1,057,066 |  [37.0; 41.0] | [102.0; 109.0] |
+| C9-FLA(FLA) |  Florida  | 1,070,376  |  2,712,798 | [24.0; 31.0]	 | [79; 87.5]     |
+| C9_E(E)     |  Eastern USA  |  3,598,623	 | 8,778,114 | [24.0; 50.0] | [-infty; 79.0] |
+| C9_CTR(CTR) |  Central USA  | 14,081,816  | 34,292,496 | [25.0; 50.0] | [79.0; 100.0]	 |
+
+- datasets start with L_ are downloaded from https://www.cs.utah.edu/~lifeifei/SpatialDataset.htm
+    - L_CAL is from [California Road Network's Nodes (Node ID, Longitude, Latitude)](https://www.cs.utah.edu/~lifeifei/research/tpq/cal.cnode), [California Road Network's Edges (Edge ID, Start Node ID, End Node ID, L2 Distance)](https://www.cs.utah.edu/~lifeifei/research/tpq/cal.cedge)
+    - L_SF is from [San Francisco Road Network's Nodes (Node ID, Normalized X Coordinate, Normalized Y Coordinate)](https://www.cs.utah.edu/~lifeifei/research/tpq/SF.cnode), [San Francisco Road Network's Edges (Edge ID, Start Node ID, End Node ID, L2 Distance)](https://www.cs.utah.edu/~lifeifei/research/tpq/SF.cedge)
+    - L_NA is from [North America Road Network's Nodes (Node ID, Normalized X Coordinate, Normalized Y Coordinate)](https://www.cs.utah.edu/~lifeifei/research/tpq/NA.cnode), [North America Road Network's Edges (Edge ID, Start Node ID, End Node ID, L2 Distance)](https://www.cs.utah.edu/~lifeifei/research/tpq/NA.cedge)
+
+
+- Raw Data can be processed with the code under the [DataProcess](DataProcess) Folder 
+
 ## Compile
 Execute the maven command, ```mvn clean compile assembly:single```, to compile and package the code. The executable jar file is placed under the *'target'* folder. 
 

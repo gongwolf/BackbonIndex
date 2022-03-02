@@ -19,11 +19,10 @@ and the spatial length of road segments. We generate two more edge weights by sa
 
 ### Raw Data
 
-ref to [EDBT paper](https://www.dropbox.com/s/nm2zfdvlytm8aow/backbone_EDBT2022_CR_submitted.pdf?dl=0) for data description.
+[//]: # (ref to [EDBT paper]&#40;https://www.dropbox.com/s/nm2zfdvlytm8aow/backbone_EDBT2022_CR_submitted.pdf?dl=0&#41; for data description.)
 
-- http://users.diag.uniroma1.it/challenge9/download.shtml
-- EDBT paper: https://www.cs.utah.edu/~lifeifei/SpatialDataset.htm
-- datasets start with C9_ are downloaded from http://users.diag.uniroma1.it/challenge9/download.shtml
+- datasets start with C9_ are downloaded from http://users.diag.uniroma1.it/challenge9/download.shtml.
+- datasets start with L_ are downloaded from https://www.cs.utah.edu/~lifeifei/SpatialDataset.htm.
 
 | Name        | Description  | # nodes | # arcs | Longitude | Latitude       | 
 |-------------|--------------|---------|--------|-----------|----------------|
